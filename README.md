@@ -55,8 +55,8 @@ More detail: [docs/architecture.md](docs/architecture.md).
 ## Quick start
 
 ```bash
-git clone https://github.com/tolgaboroglu/chatbot-upwork-freelance.git
-cd chatbot-upwork-freelance
+git clone https://github.com/tolgaboroglu/chatbot-for-lawyer.git
+cd chatbot-for-lawyer
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env        # add ANTHROPIC_API_KEY (or set GENERATOR=extractive / retrieval)
