@@ -4,13 +4,40 @@ A retrieval-augmented (RAG) chatbot that answers questions about Turkish legisla
 
 The project started as a freelance build for a law practice in Turkey (Upwork, 2024, rated 5.0). This repository holds the original delivery (`legacy/v1`) and a rebuilt v2 with retrieval, citations, pluggable models and tests.
 
+![Demo: asking a legislation question, then switching to case-law mode](docs/demo.gif)
+
+## Demo
+
+**Try it online:** [Interactive demo](https://claude.ai/artifact/Doyt4S1fadss5jS3RvPNK8). Opens with recorded example answers; signed-in claude.ai users can also ask their own questions and get live answers.
+
+**Run it yourself in one minute** (offline, no API key or model download):
+
+```bash
+git clone https://github.com/tolgaboroglu/chatbot-for-lawyer.git && cd chatbot-for-lawyer
+pip install -r requirements-dev.txt
+RETRIEVER=tfidf GENERATOR=retrieval python -m app.server   # open http://127.0.0.1:5000
+```
+
+Then try these questions:
+
+| Mode | Question | Expected top source |
+|---|---|---|
+| Mevzuat Q&A | Üç yıldır çalışan işçinin ihbar süresi ne kadar? | `4857 s. İş K. m.17` |
+| Mevzuat Q&A | Konut kirasına yapılacak artış en fazla ne kadar olabilir? | `6098 s. TBK m.344` |
+| Case law | İstifa eden işçi kıdem tazminatı alabilir mi? | Yargıtay case-law summary on resignation |
+| Case law | Fazla mesai tanıkla ispatlanırsa ne olur? | Yargıtay case-law summary on proving overtime |
+
+For full written answers, add `ANTHROPIC_API_KEY` to `.env` and start with `python -m app.server`.
+
+### Screenshots
+
 ![Legislation Q&A](docs/screenshots/01-legislation-answer.png)
 
 | Case-law mode (dark theme) | Mobile |
 |---|---|
 | ![Case law mode](docs/screenshots/02-case-law-dark.png) | <img src="docs/screenshots/03-mobile.png" width="300" alt="Mobile view"> |
 
-> Screenshots were taken in fully offline mode (`RETRIEVER=tfidf`, `GENERATOR=retrieval`), so the answer shows the ranked source passages. With `GENERATOR=anthropic` the same sources are summarized into a written answer with `[1]`, `[2]` citations.
+> The GIF and screenshots were recorded in offline mode (`RETRIEVER=tfidf`, `GENERATOR=retrieval`), so answers show the ranked source passages. With `GENERATOR=anthropic` the same sources are summarized into a written answer with `[1]`, `[2]` citations.
 
 ## Features
 
