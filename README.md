@@ -13,7 +13,7 @@ The project started as a freelance build for a law practice in Turkey (Upwork, 2
 **Run it yourself in one minute** (offline, no API key or model download):
 
 ```bash
-git clone https://github.com/tolgaboroglu/chatbot-for-lawyer.git && cd chatbot-for-lawyer
+git clone https://github.com/tolgaboroglu/chatbot-for-lawyers-demo.git && cd chatbot-for-lawyers-demo
 pip install -r requirements-dev.txt
 RETRIEVER=tfidf GENERATOR=retrieval python -m app.server   # open http://127.0.0.1:5000
 ```
@@ -82,8 +82,8 @@ More detail: [docs/architecture.md](docs/architecture.md).
 ## Quick start
 
 ```bash
-git clone https://github.com/tolgaboroglu/chatbot-for-lawyer.git
-cd chatbot-for-lawyer
+git clone https://github.com/tolgaboroglu/chatbot-for-lawyers-demo.git
+cd chatbot-for-lawyers-demo
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env        # add ANTHROPIC_API_KEY (or set GENERATOR=extractive / retrieval)
