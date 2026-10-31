@@ -1,21 +1,7 @@
-# Security Policy
+# Security
 
-## Supported Versions
+- API keys live in `.env`, which is git-ignored. Never commit real keys.
+- Client documents (case files, petitions, CSV exports) are never committed: `*.csv` and `data/private/` are git-ignored. The repository only ships a sample corpus of short summaries of public legislation.
+- The app binds to `127.0.0.1` by default. `--share` opens a public ngrok tunnel; use it only for short demos.
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
-
-## Reporting a Vulnerability
-
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+To report a vulnerability, open a private security advisory on this repository or contact the maintainer through Upwork.

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tolga Boroglu </title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="sidebar">
+            <div class="profile">
+                <img src="static/images.png" alt="Profil Resmi">
+                <h2>Tolga Boroglu</h2>
+                <p>Data Scientist</p>
+            </div>
+            <div class="rooms">
+                <h3>Information</h3>
+                <ul>
+                    <li class="active">Data.ai</li>
+                    <li>Services</li>
+                    <li>Blog</li>
+                    <li>Contact</li>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-main">
+            <div class="chat-header">
+                <h2>Data.ai</h2>
+                <div class="logout">
+                    Log out
+                </div>
+            </div>
+            <div id="chatbox" class="chatbox">
+                <div id="chat-log" class="chat-log">
+                    <!-- Mesajlar buraya eklenecek -->
+                </div>
+            </div>
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="user-input" placeholder="Mesajınızı yazın..." autocomplete="off">
+                <button type="submit">Gönder</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('chat-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var userInput = document.getElementById('user-input').value;
+            if (userInput.trim() !== '') {
+                var chatLog = document.getElementById('chat-log');
+                var userMessage = document.createElement('div');
+                userMessage.className = 'user-message';
+                userMessage.textContent = 'Soru: ' + userInput;
+                chatLog.appendChild(userMessage);
+
+                fetch('/get_response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ user_input: userInput })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var botMessage = document.createElement('div');
+                    botMessage.className = 'bot-message';
+                    botMessage.textContent = 'Data.ai yanıtı: ' + data.response;
+                    chatLog.appendChild(botMessage);
+                    chatLog.scrollTop = chatLog.scrollHeight;
+                });
+
+                document.getElementById('user-input').value = '';
+            }
+        });
+    </script>
+</body>
+</html>

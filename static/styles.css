@@ -1,152 +1,75 @@
-body {
-    font-family: Arial, sans-serif;
-    background-image: url('/static/background.jpg'); /* Arka plan resmi */
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+/* Layout: a "case file" rail on the left, the conversation on the right; stacks on narrow screens. */
+:root{
+  --bg:#EDF0F2; --surface:#FFFFFF; --sunk:#E3E8EB; --ink:#16232E; --muted:#5B6A75; --line:#D3DADF;
+  --accent:#1F5C4A; --accent-soft:#DCEBE5; --accent-ink:#FFFFFF; --warn:#8A5A00; --warn-soft:#F6EAD2;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
 }
+@media (prefers-color-scheme:dark){:root{
+  --bg:#10171D; --surface:#172129; --sunk:#0C1217; --ink:#E4EAEE; --muted:#93A2AD; --line:#283640;
+  --accent:#6CC2A3; --accent-soft:#1B3A31; --accent-ink:#0C1A15; --warn:#E3B45C; --warn-soft:#3A2E17; color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.app{max-width:1180px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;min-height:100%}
+@media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+.eyebrow{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
 
-.chat-container {
-    display: flex;
-    width: 80%;
-    height: 90vh;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
+.rail{display:flex;flex-direction:column;gap:22px;min-width:0}
+.brand{display:flex;flex-direction:column;gap:6px}
+.brand h1{font-size:30px;font-weight:600;line-height:1.15}
+.brand p{margin:0;color:var(--muted)}
+.block{display:flex;flex-direction:column;gap:10px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--sunk);border-radius:10px;padding:4px;gap:4px}
+.seg button{font:inherit;font-size:13.5px;font-weight:500;border:0;border-radius:7px;padding:9px 8px;background:transparent;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0 / .12)}
+.examples{display:flex;flex-direction:column;gap:8px}
+.ex{font:inherit;font-size:14px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 12px;cursor:pointer}
+.ex:hover{border-color:var(--accent)}
+.models{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:0;font-size:13px}
+.models dt{color:var(--muted)}
+.models dd{margin:0;font-family:var(--f-mono);font-size:12px;overflow-wrap:anywhere}
 
-.sidebar {
-    width: 25%;
-    background-color: #2c3e50;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
+.chat{background:var(--surface);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;min-width:0;height:calc(100vh - 48px);min-height:560px;overflow:hidden}
+.chat-head{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.chat-head h2{font-size:18px;font-weight:600}
+.clear{font:inherit;font-size:13px;border:0;background:none;color:var(--muted);cursor:pointer}
+.clear:hover{color:var(--ink)}
+.log{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:22px}
+.empty{margin:auto;text-align:center;max-width:40ch;color:var(--muted)}
+.empty h3{color:var(--ink);font-size:20px;margin-bottom:6px}
+.msg{display:flex;flex-direction:column;gap:8px;max-width:74ch;min-width:0}
+.msg.user{align-self:flex-end;align-items:flex-end}
+.msg.user .bubble{background:var(--accent);color:var(--accent-ink);border-radius:14px 14px 4px 14px;padding:10px 14px}
+.who{font-size:11.5px;color:var(--muted)}
+.answer{border-left:2px solid var(--line);padding-left:16px;display:flex;flex-direction:column;gap:10px;min-width:0;overflow-wrap:anywhere}
+.answer h3{font-size:15.5px;font-weight:600;color:var(--accent);margin-top:4px}
+.answer p{margin:0}
+.answer ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.answer code{font:500 12.5px var(--f-mono);background:var(--sunk);padding:1px 6px;border-radius:5px}
+.cite{font:600 11px var(--f-mono);color:var(--accent);text-decoration:none;vertical-align:super;margin-left:1px}
+.thinking{color:var(--muted);font-style:italic}
+.err{color:var(--warn)}
+.sources{margin-left:18px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.sources summary{cursor:pointer;padding:8px 12px;font-size:13px;color:var(--muted);font-weight:500}
+.sources ol{list-style:none;margin:0;padding:0 12px 12px;display:flex;flex-direction:column;gap:10px}
+.src{display:grid;grid-template-columns:26px 1fr;gap:8px;font-size:13px}
+.src .n{font:600 12px var(--f-mono);color:var(--accent)}
+.src .t{font-weight:600}
+.src .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:1px 6px;border-radius:4px;margin-left:6px;background:var(--accent-soft);color:var(--accent)}
+.src .k.ictihat{background:var(--warn-soft);color:var(--warn)}
+.src code{font:500 11.5px var(--f-mono);color:var(--muted)}
+.src p{margin:4px 0 0;color:var(--muted)}
+.src:target{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
 
-.profile {
-    text-align: center;
-}
-
-.profile img {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
-}
-
-.profile h2 {
-    margin: 0;
-}
-
-.profile p {
-    margin: 0;
-}
-
-.rooms {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.rooms h3 {
-    margin-top: 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #34495e;
-}
-
-.rooms ul {
-    list-style: none;
-    padding: 0;
-}
-
-.rooms li {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #34495e;
-}
-
-.rooms li.active {
-    background-color: #16a085;
-}
-
-.chat-main {
-    width: 75%;
-    display: flex;
-    flex-direction: column;
-    background-color: #ecf0f1;
-}
-
-.chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #2c3e50;
-    color: white;
-}
-
-.logout {
-    cursor: pointer;
-}
-
-.chatbox {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.chat-log {
-    display: flex;
-    flex-direction: column;
-}
-
-.user-message {
-    align-self: flex-end;
-    background-color: #3498db;
-    color: white;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    max-width: 80%;
-    word-wrap: break-word;
-}
-
-.bot-message {
-    align-self: flex-start;
-    background-color: #bdc3c7;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    max-width: 80%;
-    word-wrap: break-word;
-}
-
-.chat-form {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #bdc3c7;
-}
-
-input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    width: 15%;
-    padding: 10px;
-    background-color: #16a085;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+.composer{border-top:1px solid var(--line);padding:14px 20px 16px;display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:10px;align-items:flex-end}
+textarea{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;resize:none;min-height:46px;max-height:160px}
+textarea:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.send{font:inherit;font-weight:600;border:0;border-radius:10px;padding:12px 18px;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.send:disabled{opacity:.5;cursor:default}
+.note{font-size:12px;color:var(--muted);margin:0}

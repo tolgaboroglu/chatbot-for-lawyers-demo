@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+myenv/
+.env
+.pytest_cache/
+data/corpus.jsonl
+data/private/
+*.csv

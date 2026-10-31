@@ -1,78 +1,66 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tolga Boroglu </title>
-    <link rel="stylesheet" href="static/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hukuk Asistanı</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="sidebar">
-            <div class="profile">
-                <img src="static/images.png" alt="Profil Resmi">
-                <h2>Tolga Boroglu</h2>
-                <p>Data Scientist</p>
-            </div>
-            <div class="rooms">
-                <h3>Information</h3>
-                <ul>
-                    <li class="active">Data.ai</li>
-                    <li>Services</li>
-                    <li>Blog</li>
-                    <li>Contact</li>
-                </ul>
-            </div>
-        </div>
-        <div class="chat-main">
-            <div class="chat-header">
-                <h2>Data.ai</h2>
-                <div class="logout">
-                    Log out
-                </div>
-            </div>
-            <div id="chatbox" class="chatbox">
-                <div id="chat-log" class="chat-log">
-                    <!-- Mesajlar buraya eklenecek -->
-                </div>
-            </div>
-            <form id="chat-form" class="chat-form">
-                <input type="text" id="user-input" placeholder="Mesajınızı yazın..." autocomplete="off">
-                <button type="submit">Gönder</button>
-            </form>
-        </div>
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <span class="eyebrow">LegalTech · RAG chatbot</span>
+      <h1>Hukuk Asistanı</h1>
+      <p>Answers questions on Turkish legislation and summarizes how the high courts tend to rule, citing every source.</p>
     </div>
 
-    <script>
-        document.getElementById('chat-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var userInput = document.getElementById('user-input').value;
-            if (userInput.trim() !== '') {
-                var chatLog = document.getElementById('chat-log');
-                var userMessage = document.createElement('div');
-                userMessage.className = 'user-message';
-                userMessage.textContent = 'Soru: ' + userInput;
-                chatLog.appendChild(userMessage);
+    <div class="block">
+      <span class="eyebrow">Mode</span>
+      <div class="seg" role="group" aria-label="Mode">
+        <button type="button" data-mode="mevzuat" aria-pressed="true">Mevzuat Q&amp;A</button>
+        <button type="button" data-mode="ictihat" aria-pressed="false">Case law</button>
+      </div>
+    </div>
 
-                fetch('/get_response', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ user_input: userInput })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    var botMessage = document.createElement('div');
-                    botMessage.className = 'bot-message';
-                    botMessage.textContent = 'Data.ai yanıtı: ' + data.response;
-                    chatLog.appendChild(botMessage);
-                    chatLog.scrollTop = chatLog.scrollHeight;
-                });
+    <div class="block">
+      <span class="eyebrow">Try a question</span>
+      <div class="examples" id="examples"></div>
+    </div>
 
-                document.getElementById('user-input').value = '';
-            }
-        });
-    </script>
+    <div class="block">
+      <span class="eyebrow">Running models</span>
+      <dl class="models">
+        <dt>Retriever</dt><dd id="m-retriever">{{ info.retriever }}</dd>
+        <dt>Generator</dt><dd id="m-generator">{{ info.generator }}</dd>
+        <dt>Top-k</dt><dd>{{ info.top_k }} passages</dd>
+      </dl>
+    </div>
+  </aside>
+
+  <main class="chat">
+    <div class="chat-head">
+      <h2 id="chat-title">Mevzuat Q&amp;A</h2>
+      <button class="clear" id="clear" type="button">New conversation</button>
+    </div>
+    <div class="log" id="log" aria-live="polite">
+      <div class="empty" id="empty">
+        <h3>Ask about Turkish law</h3>
+        <p>Pick an example on the left or type your own question. Every answer lists the passages it was built from.</p>
+      </div>
+    </div>
+    <form class="composer" id="form">
+      <div class="row">
+        <label for="q" class="sr-only">Your question</label>
+        <textarea id="q" rows="1" placeholder="Ask a question…"></textarea>
+        <button class="send" id="send" type="submit">Ask</button>
+      </div>
+      <p class="note">Research support, not legal advice. Verify on mevzuat.gov.tr and karararama.yargitay.gov.tr.</p>
+    </form>
+  </main>
+</div>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
